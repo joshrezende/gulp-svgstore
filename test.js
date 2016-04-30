@@ -218,6 +218,8 @@ describe('gulp-svgstore unit test', function () {
 
       stream.on('data', function (file) {
         assert.equal(file.relative, 'icons.svg')
+        assert.equal(file.base, 'src/icons')
+        assert.equal(file.path, 'src/icons/icons.svg')
         done()
       })
 

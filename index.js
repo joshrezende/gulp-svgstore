@@ -10,6 +10,7 @@ module.exports = function (config) {
   var namespaces = {}
   var isEmpty = true
   var fileName
+  var baseName
   var inlineSvg = config.inlineSvg || false
   var ids = {}
 
@@ -51,7 +52,8 @@ module.exports = function (config) {
     ids[idAttr] = true
 
     if (!fileName) {
-      fileName = path.basename(file.base)
+      baseName = file.base
+      fileName = path.basename(baseName)
       if (fileName === '.' || !fileName) {
         fileName = 'svgstore.svg'
       } else {
@@ -118,7 +120,11 @@ module.exports = function (config) {
     for (var nsName in namespaces) {
       $combinedSvg.attr(nsName, namespaces[nsName])
     }
-    var file = new gutil.File({ path: fileName, contents: new Buffer($.xml()) })
+    var file = new gutil.File({
+      path: path.join(baseName, fileName)
+    , base: baseName
+    , contents: new Buffer($.xml())
+    })
     this.push(file)
     cb()
   }
